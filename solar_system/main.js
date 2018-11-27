@@ -48,7 +48,9 @@ SolarSystem.prototype.render3D = function() {
 	var holdLeft = false,
 	    holdRight = false,
 	    holdUp = false,
-	    holdDown = false;
+	    holdDown = false,
+		holdFront = false,
+		holdBack = false;
 
 	window.onkeyup = function (e) {
 	    if (e.which == 37) {
@@ -123,6 +125,7 @@ SolarSystem.prototype.render3D = function() {
 	
 var onMouseDown = false;
 
+/*
 // NE SERT PAS POUR LE MOMENT
 window.onmousemove = function (e) {
 
@@ -146,14 +149,75 @@ window.onmousemove = function (e) {
                     var clickedObj = (intersects[0].object);
                     SelectMeshMover(clickedObj, 'ctlr');
                 }
-        */
+        *
     } else {
         $("body").css("cursor", "default");
     }
 
-}
+}*/
   
 
+  
+  
+// MOUSE EVENT DOWN / UP
+
+initMouseEvent();
+
+function initMouseEvent() {
+		
+	var iMobile=0;
+
+    //window.onmousedown = MyMouseDown
+    window.addEventListener('mousedown', MyMouseDown, true);
+
+    function MyMouseDown(e) {
+        if (e.target.tagName === "CANVAS") {
+            onMouseDown = {
+                moved: false
+            };
+        }
+
+        switch (e.button) {
+			case 0: // First button ("left")
+				holdFront = true;
+				holdBack = false;
+				
+				break;
+
+            case 2: // Secondary button ("right")
+				holdFront = false;
+				holdBack = true;
+				
+                break;
+        } // switch 
+    }
+	
+    // Desactivate Context Menu on Right Clic 
+	document.oncontextmenu = new Function("return false");
+
+    window.onmouseup = function (e) {
+        if (e.target.tagName === "CANVAS") {
+           
+            
+        }
+        onMouseDown = false;
+		
+		holdFront = false;
+		holdBack = false;
+    }
+}
+
+
+window.onresize = function () {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+};
+
+  
+  
+  
+  
   //Lights
   var light = new THREE.HemisphereLight( 0xffffbb, 0x080820, .3 );
   scene.add(light);
@@ -264,9 +328,9 @@ window.onmousemove = function (e) {
     var vector = new THREE.Vector3();
     var direction = camera.getWorldDirection(vector);	
 	
-	if (holdUp) {
+	if ((holdUp || holdFront) && camera.position.distanceTo(new THREE.Vector3(0, 0, 0)) > 20) {
         camera.position.add(vector.multiplyScalar(moveSpeed));
-    } else if (holdDown) {
+    } else if (holdDown || holdBack) {
         camera.position.sub(direction.multiplyScalar(moveSpeed));
     }
 	
