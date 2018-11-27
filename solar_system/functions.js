@@ -392,7 +392,7 @@ function LogFPS() {
     console.groupEnd();
 }
 
-function LogCam() {
+function LogCam(camera, controls) {
 	var msg = format2Vector(camera.position) + format2Vector(camera.rotation, 2, 'r')
     + 'Distance to Center:' + NumToFormat(camera.position.distanceTo(new THREE.Vector3(0, 0, 0)));
 	var strControlName='';
@@ -407,7 +407,7 @@ function LogCam() {
 	return msg + '<br/>' + strControlName;
 }
 
-function LogFPCam() {
+function LogFPCam(controls) {
 	return ""; 
     if ((controls instanceof (THREE.FirstPersonControls))) {
         message = "<br/>";
@@ -595,6 +595,8 @@ function removeDynamicMovers() {
 
 var onMouseDown = false;
 
+/*
+
 window.onmousemove = function (e) {
 
     if (onMouseDown) onMouseDown.moved = true;
@@ -617,18 +619,18 @@ window.onmousemove = function (e) {
                     var clickedObj = (intersects[0].object);
                     SelectMeshMover(clickedObj, 'ctlr');
                 }
-        */
+        *
     } else {
         $("body").css("cursor", "default");
     }
 
 }
-
+*/
 
 // MOUSE EVENT DOWN / UP
 
-initMouseEvent();
-
+//initMouseEvent();
+/*
 function initMouseEvent() {
 		
 	var iMobile=0;
@@ -669,7 +671,7 @@ function initMouseEvent() {
 
                 }
                 else { // ADD NEW BALL MOVER
-			*/
+			*
 					iMobile++;
 
                     var vel = raycaster.ray.direction.clone().multiplyScalar(parseFloat(options.START_SPEED));
@@ -745,7 +747,7 @@ function initMouseEvent() {
                         } else {
                             movers[i].selected = false;
                         }
-                    }*/
+                    }*
 
                 } else {
                     isMoverSelected = false;
@@ -784,6 +786,8 @@ window.onkeyup = function (e) {
         holdDown = false;
     }
 }
+
+/*
     
 window.onkeydown = function (e) {
     var charTMP = String.fromCharCode(e.which);
@@ -815,7 +819,7 @@ window.onkeydown = function (e) {
                 console.log("angleY:" + NumToFormat(angleY,2)); // direction.normalize())
                 controls.lat = - angleY * 180 / Math.PI;
             }
-*/
+*
 
             controls.target.copy(direction);
 
@@ -885,3 +889,5 @@ window.onkeydown = function (e) {
         //LogFPS();
     }
 }
+
+*/
