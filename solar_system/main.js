@@ -33,14 +33,40 @@ SolarSystem.prototype.render3D = function() {
   
 
   var controls = orbitControls
+  controls.update();
+
   
   var pause = false;
   
   var clock = new THREE.Clock();
   
+  
+// KEYBOARD  --- 
+
+	console.time();
+
+	var holdLeft = false,
+	    holdRight = false,
+	    holdUp = false,
+	    holdDown = false;
+
+	window.onkeyup = function (e) {
+	    if (e.which == 37) {
+	        holdLeft = false;
+	    } else if (e.which == 38) {
+	        holdUp = false;
+	    } else if (e.which == 39) {
+	        holdRight = false;
+	    } else if (e.which == 40) {
+	        holdDown = false;
+	    }
+	}
+  
+  
   			// KEY DOWN 
 			document.addEventListener("keydown", onDocumentKeyDown, false);
 			function onDocumentKeyDown(event) {
+				e = event
 
 				var keyCode = event.which;
 				// up
@@ -74,17 +100,58 @@ SolarSystem.prototype.render3D = function() {
   
 				}
 				
-				else if (keyCode === 32) { // SPACE
+				// SPACE
+				else if (keyCode === 32) {
 					pause = !pause;
 					//e.preventDefault();
 					if (pause) console.timeEnd()
 					else console.time();
 					return false;
+				
+				} else if (e.which == 37) {
+					holdLeft = true;
+				} else if (e.which == 38) {
+					holdUp = true;
+				} else if (e.which == 39) {
+					holdRight = true;
+				} else if (e.which == 40) {
+					holdDown = true;
 				}
-
 			}	
 
-//MOUSE CLICK
+	//MOUSE CLICK
+	
+var onMouseDown = false;
+
+// NE SERT PAS POUR LE MOMENT
+window.onmousemove = function (e) {
+
+    if (onMouseDown) onMouseDown.moved = true;
+
+    var vector = new THREE.Vector3(
+        +(e.clientX / window.innerWidth) * 2 - 1,
+        -(e.clientY / window.innerHeight) * 2 + 1, 0.5);
+    //projector.unprojectVector( vector, camera );
+
+    vector.unproject(camera);
+
+    var raycaster = new THREE.Raycaster(camera.position, vector.sub(camera.position).normalize());
+
+    var intersects = raycaster.intersectObjects(scene.children);
+
+    if (intersects.length > 0) {
+        $("body").css("cursor", "pointer");
+        /*	
+            if (window.event.ctrlKey) {
+                    var clickedObj = (intersects[0].object);
+                    SelectMeshMover(clickedObj, 'ctlr');
+                }
+        */
+    } else {
+        $("body").css("cursor", "default");
+    }
+
+}
   
 
   //Lights
@@ -189,6 +256,20 @@ SolarSystem.prototype.render3D = function() {
   
 
   var render = function() {
+	  
+	// MOVE Camera
+	var moveSpeed = 4
+	
+	// DEPLACEMENT 
+    var vector = new THREE.Vector3();
+    var direction = camera.getWorldDirection(vector);	
+	
+	if (holdUp) {
+        camera.position.add(vector.multiplyScalar(moveSpeed));
+    } else if (holdDown) {
+        camera.position.sub(direction.multiplyScalar(moveSpeed));
+    }
+	
 
     // get current time and time differnce
     var t2 = Date.now() / 1000;
