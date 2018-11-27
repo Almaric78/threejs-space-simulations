@@ -330,7 +330,7 @@ window.onresize = function () {
 	
 	if ((holdUp || holdFront) && camera.position.distanceTo(new THREE.Vector3(0, 0, 0)) > 20) {
         camera.position.add(vector.multiplyScalar(moveSpeed));
-    } else if (holdDown || holdBack) {
+    } else if ((holdDown || holdBack) && camera.position.distanceTo(new THREE.Vector3(0, 0, 0)) < 560) {
         camera.position.sub(direction.multiplyScalar(moveSpeed));
     }
 	
