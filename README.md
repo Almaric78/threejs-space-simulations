@@ -1,3 +1,12 @@
+
+# Live Démos :
+
+[Live Démo](https://almaric78.github.io/threejs-space-simulations/solar_system/index.html) or : [here](http://htmlpreview.github.io/?https://github.com/Almaric78/threejs-space-simulations/blob/master/solar_system/index.html)
+
+# From initial project :
+
+Here : https://github.com/MattLoftus/threejs-space-simulations :
+
 This repository is a collection of recent experiments I've been working on in three.js.
 
 Three.js is a JavaScript library built on top of the WebGL graphics language.  WebGL is a low level, verbose language used to create graphics in the browser that can be both very performant and very hard to use.  Three.js greatly reduces the amount of boilerplate code you have to write to build rich 3D graphics, and wraps common operations into intuitive constructor functions.  If you're interested in learning three.js, I recently completed two new tutorials on getting started with the three.js library.  You can find them at [loftus.xyz](http://loftus.xyz)
@@ -19,4 +28,3 @@ This will host the folder on port 8000, so you can head over to the browser and 
 ```
 python2.7 -m SimpleHTTPServer
 ```
-
