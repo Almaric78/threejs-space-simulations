@@ -7,6 +7,8 @@
     <script src="../lib/jQuery.min.js"></script>
     <script src="../lib/three.min.js"></script>
     <script src="../lib/orbit_controls.js"></script>
+    <script src="FirstPersonControls.js"></script>
+    <script src="functions.js"></script>
 
   </head>
   <body>
@@ -18,7 +20,20 @@
       </div>
 
       <div class="info-modal">
-        
+
+		<fieldset id="IHMCam">
+			<label>
+				<input id="cbCam" type="checkbox"> CAMERA:
+			</label>
+			<label2>
+				<span id="camera_info"></span>
+			</label2>
+			<label>
+				<input id="cbFPC" type="checkbox"> Free Cam:
+			</label>
+		</fieldset>
+
+	  
       </div>
     </div>
 

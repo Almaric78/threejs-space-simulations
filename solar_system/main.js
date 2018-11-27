@@ -1,3 +1,7 @@
+
+var $camera_info = $("#camera_info");
+
+
 //Create a function that will construct a solar
 //system with three.js using an input data set
 var SolarSystem = function(data) {
@@ -22,8 +26,66 @@ SolarSystem.prototype.render3D = function() {
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.body.appendChild(renderer.domElement);
 
+  
+  
   //Orbit Controls
   var orbitControls = new THREE.OrbitControls(camera, renderer.domElement);
+  
+
+  var controls = orbitControls
+  
+  var pause = false;
+  
+  var clock = new THREE.Clock();
+  
+  			// KEY DOWN 
+			document.addEventListener("keydown", onDocumentKeyDown, false);
+			function onDocumentKeyDown(event) {
+
+				var keyCode = event.which;
+				// up
+				if (keyCode == 87 || keyCode == 38) {
+					//cube.position.y += 1;
+					// down
+					//alert("Up2"); 
+
+				}
+
+				console.log("keyCode=" + keyCode);
+
+				// ECHAP
+				if (keyCode == 27) {
+					// inverseControls();
+					//parameters.FPS_Controls = !controls.enabled
+					controls.enabled = !controls.enabled
+					//parameters.FPS_Controls
+					//GUI_Controls.updateDisplay()
+					console.log("New state control " + controls.enabled)
+
+				}
+				
+				if (keyCode == 49) {
+					console.log('FPCAM');
+					  var control2FPS = new THREE.FirstPersonControls(camera, renderer.domElement);
+					  
+					  control2FPS.movementSpeed = 50;
+					  control2FPS.lookSpeed = 0.1;
+					  controls = control2FPS
+  
+				}
+				
+				else if (keyCode === 32) { // SPACE
+					pause = !pause;
+					//e.preventDefault();
+					if (pause) console.timeEnd()
+					else console.time();
+					return false;
+				}
+
+			}	
+
+//MOUSE CLICK
+  
 
   //Lights
   var light = new THREE.HemisphereLight( 0xffffbb, 0x080820, .3 );
@@ -124,8 +186,10 @@ SolarSystem.prototype.render3D = function() {
   console.log(planetObjects["earth"].position);
 
   var t1 = Date.now() / 1000;
+  
 
   var render = function() {
+
     // get current time and time differnce
     var t2 = Date.now() / 1000;
     var dT = (t2 - t1) * ctx.tScale;
@@ -138,7 +202,7 @@ SolarSystem.prototype.render3D = function() {
       var phi = planet.inclination * Math.sin(planet.theta);
 
       if (planet.name === "earth") {
-        console.log(phi, planet.theta);
+        //console.log(phi, planet.theta);
       }
 
       //Determine x,y, and z coordinates of planets based off theta + phi
@@ -148,9 +212,34 @@ SolarSystem.prototype.render3D = function() {
           * ctx.eScale;
       planetObjects[planet.name].position.y = - planet.distance_KM * Math.cos((Math.PI / 2) - phi)  * ctx.eScale;
     });
+	
+
+	
+	
+	//var controls, control2FPS
+	if(document.getElementById('cbFPC').checked) {
+		if(!control2FPS) {
+			control2FPS = new THREE.FirstPersonControls(camera, renderer.domElement);
+			control2FPS.movementSpeed = 50;
+			control2FPS.lookSpeed = 0.1;
+		}
+		controls = control2FPS
+	} else 
+		controls = orbitControls
+	
+	
+        // camera 
+        if(document.getElementById('cbCam').checked)
+            $camera_info.html( LogCam(camera, controls) + LogFPCam(controls) ) ;
+        else $camera_info.html('');	
+	
+	
 
     renderer.render(scene, camera);
     requestAnimationFrame( render );
+	
+	controls.update(clock.getDelta());
+
   }
   render();
 
@@ -171,7 +260,7 @@ $(".timescale button").click(function (event) {
   }
 
   //Change timescale display
-  $(".timescale span").html(solarSystem.tScale); 
+  $(".timescale span").html(NumToFormat(solarSystem.tScale)); 
 });
 
 
