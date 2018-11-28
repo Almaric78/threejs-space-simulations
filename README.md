@@ -1,7 +1,9 @@
 
 # Live Démos :
 
-[Live Démo](https://almaric78.github.io/threejs-space-simulations/solar_system/index.html) or : [here](http://htmlpreview.github.io/?https://github.com/Almaric78/threejs-space-simulations/blob/master/solar_system/index.html)
+[Live Démo](https://almaric78.github.io/threejs-space-simulations/solar_system) on GitHub page 
+
+or : [here](http://htmlpreview.github.io/?https://github.com/Almaric78/threejs-space-simulations/blob/master/solar_system/index.html) but problem with "DOMException: Failed to execute 'texImage2D' on 'WebGLRenderingContext': The image element contains cross-origin data, and may not be loaded."
 
 # From initial project :
 
