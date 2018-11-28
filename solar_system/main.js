@@ -27,11 +27,10 @@ SolarSystem.prototype.render3D = function() {
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.body.appendChild(renderer.domElement);
 
-  
+  // CONTROLS
   
   //Orbit Controls
   var orbitControls = new THREE.OrbitControls(camera, renderer.domElement);
-  
 
   var controls = orbitControls
   //controls.update();
@@ -125,13 +124,13 @@ SolarSystem.prototype.render3D = function() {
 	//MOUSE CLICK
 	var selection
 	
-var onMouseDown = false;
+//var onMouseDown = false;
 
-/*
-// NE SERT PAS POUR LE MOMENT
+
+// ONMOUSEMOVE : Permet de changer de curseur sur la Sélection
 window.onmousemove = function (e) {
 
-    if (onMouseDown) onMouseDown.moved = true;
+    //if (onMouseDown) onMouseDown.moved = true;
 
     var vector = new THREE.Vector3(
         +(e.clientX / window.innerWidth) * 2 - 1,
@@ -145,18 +144,24 @@ window.onmousemove = function (e) {
     var intersects = raycaster.intersectObjects(scene.children);
 
     if (intersects.length > 0) {
-        $("body").css("cursor", "pointer");
+		var clickedObj = (intersects[0].object);
+		if(clickedObj.mover) {
+		//console.log(intersects[0])
+			$("body").css("cursor", "pointer");
         /*	
             if (window.event.ctrlKey) {
                     var clickedObj = (intersects[0].object);
                     SelectMeshMover(clickedObj, 'ctlr');
                 }
-        *
+        */
+		} else {
+			$("body").css("cursor", "default");
+		}
     } else {
         $("body").css("cursor", "default");
     }
 
-}*/
+}
   
 
   
@@ -181,6 +186,32 @@ function initMouseEvent() {
 
         switch (e.button) {
 			case 0: // First button ("left")
+			
+			    //console.log("left");
+
+                var vector = new THREE.Vector3(
+                    (e.clientX / window.innerWidth) * 2 - 1,
+                    -(e.clientY / window.innerHeight) * 2 + 1, 0.5);
+
+                vector.unproject(camera);
+
+                var raycaster = new THREE.Raycaster(camera.position, vector.sub(camera.position).normalize());
+
+                var intersects = raycaster.intersectObjects(scene.children);
+				
+				//alert('s')
+			
+                if (intersects.length > 0) { // SELECTION
+
+                    var clickedObj = (intersects[0].object);
+					
+					if(clickedObj.mover){
+						selection = clickedObj.mover
+						console.log("select", clickedObj.mover)
+					}
+					
+				}
+			
 				if(window.event.shiftKey)
 					break;
 				
@@ -318,6 +349,8 @@ window.onresize = function () {
     planetMesh.position.x = planet.distance_KM;
     scene.add( planetMesh );
     planetObjects[planet.name] = planetMesh;
+	planet.mesh = planetMesh
+	planetMesh.mover = planet;
   });
   console.log(planetObjects["earth"].position);
 
@@ -389,7 +422,7 @@ window.onresize = function () {
 	
         // selection info/debug
         if (selection) {
-            $select_infos.html(LogSelection());
+            $select_infos.html(LogSelection(selection, camera));
             //$select_infos.css('color', "#" + selection.mesh.material.color.getHexString());
         }
 		

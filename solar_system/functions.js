@@ -57,7 +57,7 @@ function format2Decimales(x) {
 }
 
 function format2Vector(v, nbDigit, prefix) {
-    if (!nbDigit) nbDigit = 0;
+    if (!nbDigit) nbDigit = 2;
     if (!prefix) prefix = "";
     return NumToFormat(v.x, nbDigit, prefix + 'X')
         + NumToFormat(v.y, nbDigit, prefix + 'Y')
@@ -66,7 +66,7 @@ function format2Vector(v, nbDigit, prefix) {
 
 function NumToFormat(float, nbDigit, prefix) {
     if (!float) float = 'NULL';
-    if (!nbDigit) nbDigit = 0;
+    if (!nbDigit) nbDigit = 2;
 	if(float>1e6 || float <-1e6)
 		if (!prefix)
 			return float.toExponential(5);
@@ -422,19 +422,20 @@ function LogFPCam(controls) {
         return ""; 
 }
 
-function LogSelection() {
+function LogSelection(selection, camera) {
 	// selection info/debug
 	if (selection) {
 		var selectionMsg = '<br/> id/name:  ' + selection.name;
-	
+	/*
 		if (selection.alive)
 			selectionMsg += ' Alive';
 		else
 			selectionMsg += ' Killed by ' + selection.killedBy;
-	
+	*/
 		// position
 		selectionMsg += '<br/>' + format2Vector(selection.mesh.position);
 		selectionMsg += 'Mass: ' + NumToFormat(selection.mass);
+	/*	
 		selectionMsg += '<br/>Vertices: ' + NumToFormat(selection.vertices.length);
 		selectionMsg += '<br/>Velocity: ' + NumToFormat(selection.velocity.length(), 2);
 		
@@ -442,10 +443,11 @@ function LogSelection() {
 		if(options.NAME=="GENERAL")
 			selectionMsg += ' X ' + NumToFormat(selection.mesh.scale.length(), 2)
 
-		selectionMsg += '<br/>Biggest Force on: ' + NumToFormat(selection.biggestForce, 3); // '' + selection.forceBy; 
-		
-		selectionMsg += '<br/>DistanceToCamera: ' + NumToFormat(selection.distanceTo(camera.position));
-		selectionMsg += '<br/>DistanceToCenter: ' + NumToFormat(selection.distanceToCenter());
+		//selectionMsg += '<br/>Biggest Force on: ' + NumToFormat(selection.biggestForce, 3); // '' + selection.forceBy; 
+	*/
+		selectionMsg += '<br/>DistanceToCamera: ' + NumToFormat(selection.mesh.position.distanceTo(camera.position));
+		//selectionMsg += '<br/>DistanceToCenter: ' + NumToFormat(selection.distanceToCenter());
+		selectionMsg += '<br/>DistanceToCenter: ' + NumToFormat(selection.distance_KM, 3);
 		return selectionMsg;
 	} else return ""; 
 }
