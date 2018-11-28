@@ -2,7 +2,8 @@
 <html>
   <head>
     <title>Solar System</title>
-    <link rel="stylesheet" type="text/css" href="main.css"><link href="https://fonts.googleapis.com/css?family=Lato:400,100,300,700,400italic,900|Roboto+Condensed:400,300,700,400italic|Ubuntu:400,300,400italic,700|Roboto+Slab:400,300,700|Droid+Serif:400,700,400italic|Crimson+Text" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="main.css">
+	<link href="https://fonts.googleapis.com/css?family=Lato:400,100,300,700,400italic,900|Roboto+Condensed:400,300,700,400italic|Ubuntu:400,300,400italic,700|Roboto+Slab:400,300,700|Droid+Serif:400,700,400italic|Crimson+Text" rel="stylesheet" type="text/css">
 
     <script src="../lib/jQuery.min.js"></script>
     <script src="../lib/three.min.js"></script>
@@ -32,6 +33,40 @@
 				<input id="cbFPC" type="checkbox"> Free Cam:
 			</label>
 		</fieldset>
+		
+		</fieldset>
+
+        <fieldset id="IHMSelection">
+            LAST SELECTED:
+            <span id="select_infos"></span>
+            <br/>
+            <!-- <button onclick='lookCenter(this.innerHTML);'>lookOrigin</button> -->
+            <!-- <button onclick='inverseSelectionStatus();'>kill/reborn</button>
+            <button onclick='inverseDirection();'>inverse direction</button> -->
+            <!-- <br/> -->
+            <select id="mySelect" onchange="setSelection(this)" disabled>
+                    <option value="0" selected>Action on Selection</option>
+					<option value="changeMass">change the Mass</option>
+                    <option value="inverseSelectionStatus">kill/reborn</option>
+                    <option value="inverseDirection">inverse direction</option>
+                    <!-- <option value="valeur2" selected>Valeur 2</option> -->
+                    <option value="newColor">newColor</option>
+            </select>
+            <div>
+				<label for="cbFollowOrbitCam">
+                    <input type="radio" name="controlCam" id="cbFollowOrbitCam" onclick="onCbOrbitCam();"> Follow by Orbit Cam
+				</label>
+                <label for="cbFPS">
+                    <input type="radio" name="controlCam" id="cbFPS" value="FPS" onclick="onCbFPSCam();"> Follow by Free Cam
+				</label>
+            </div>
+
+            <div>
+                <label for="cbZoom">
+					<input id="cbZoom" type="checkbox" name="cbZoom" disabled> AutoZoomIn on it
+                </label>
+            </div>
+        </fieldset>		
 
 	  
       </div>

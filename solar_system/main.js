@@ -1,5 +1,6 @@
 
 var $camera_info = $("#camera_info");
+var $select_infos = $("#select_infos");
 
 
 //Create a function that will construct a solar
@@ -33,7 +34,7 @@ SolarSystem.prototype.render3D = function() {
   
 
   var controls = orbitControls
-  controls.update();
+  //controls.update();
 
   
   var pause = false;
@@ -41,7 +42,7 @@ SolarSystem.prototype.render3D = function() {
   var clock = new THREE.Clock();
   
   
-// KEYBOARD  --- 
+	// KEYBOARD  --- 
 
 	console.time();
 
@@ -122,6 +123,7 @@ SolarSystem.prototype.render3D = function() {
 			}	
 
 	//MOUSE CLICK
+	var selection
 	
 var onMouseDown = false;
 
@@ -179,6 +181,9 @@ function initMouseEvent() {
 
         switch (e.button) {
 			case 0: // First button ("left")
+				if(window.event.shiftKey)
+					break;
+				
 				holdFront = true;
 				holdBack = false;
 				
@@ -328,19 +333,23 @@ window.onresize = function () {
     var vector = new THREE.Vector3();
     var direction = camera.getWorldDirection(vector);	
 	
-	if ((holdUp || holdFront) && camera.position.distanceTo(new THREE.Vector3(0, 0, 0)) > 20) {
-        camera.position.add(vector.multiplyScalar(moveSpeed));
-    } else if ((holdDown || holdBack) && camera.position.distanceTo(new THREE.Vector3(0, 0, 0)) < 560) {
-        camera.position.sub(direction.multiplyScalar(moveSpeed));
-    }
+	if(camera.position.distanceTo(new THREE.Vector3(0, 0, 0)) < 650){
+		if ((holdFront) && camera.position.distanceTo(new THREE.Vector3(0, 0, 0)) > 20) {
+			camera.position.add(vector.multiplyScalar(moveSpeed));
+		} else if ((holdBack) && camera.position.distanceTo(new THREE.Vector3(0, 0, 0)) < 550) {
+			camera.position.sub(direction.multiplyScalar(moveSpeed));
+		}
+	}
 	
 
-    // get current time and time differnce
+    // get current time and time difference
     var t2 = Date.now() / 1000;
     var dT = (t2 - t1) * ctx.tScale;
     t1 = t2;
 
     planets.forEach(function (planet) {
+		if(pause) return
+		
       planetObjects[planet.name].rotation.y += planet.rotation * 10;
       var dTheta = planet.dTheta * dT; 
       planet.theta += dTheta;
@@ -378,12 +387,17 @@ window.onresize = function () {
             $camera_info.html( LogCam(camera, controls) + LogFPCam(controls) ) ;
         else $camera_info.html('');	
 	
-	
+        // selection info/debug
+        if (selection) {
+            $select_infos.html(LogSelection());
+            //$select_infos.css('color', "#" + selection.mesh.material.color.getHexString());
+        }
+		
 
     renderer.render(scene, camera);
     requestAnimationFrame( render );
 	
-	controls.update(clock.getDelta());
+	//controls.update(clock.getDelta());
 
   }
   render();

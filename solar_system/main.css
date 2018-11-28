@@ -54,3 +54,10 @@ button:hover {
   left: 10px;
   z-index: 2;
 }
+
+#IHMCam, #IHMSelection{
+	bottom: 0px;
+	font-size: x-small;
+	margin: 0px;
+	padding: 5px;
+}
