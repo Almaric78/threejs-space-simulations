@@ -42,7 +42,8 @@ var planets = [
     "diameter" : 142800,
     "period_days" : 4234,
     "rotation_days" : 0.417,
-    "inclination" : 1.3
+    "inclination" : 1.3,
+	"mass" : 1.90e27 
   },
   {
     "name" : "saturn",

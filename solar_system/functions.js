@@ -393,7 +393,7 @@ function LogFPS() {
 }
 
 function LogCam(camera, controls) {
-	var msg = format2Vector(camera.position) + format2Vector(camera.rotation, 2, 'r')
+	var msg = '<br/> ' + format2Vector(camera.position) + format2Vector(camera.rotation, 2, 'r')
     + 'Distance to Center:' + NumToFormat(camera.position.distanceTo(new THREE.Vector3(0, 0, 0)));
 	var strControlName='';
 	if(controls){
@@ -425,7 +425,7 @@ function LogFPCam(controls) {
 function LogSelection(selection, camera) {
 	// selection info/debug
 	if (selection) {
-		var selectionMsg = '<br/> id/name:  ' + selection.name;
+		var selectionMsg = ' id/name: <b>' + selection.name + '</b>';
 	/*
 		if (selection.alive)
 			selectionMsg += ' Alive';

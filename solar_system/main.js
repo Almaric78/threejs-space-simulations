@@ -63,108 +63,69 @@ SolarSystem.prototype.render3D = function() {
 	        holdDown = false;
 	    }
 	}
-  
-  
-  			// KEY DOWN 
-			document.addEventListener("keydown", onDocumentKeyDown, false);
-			function onDocumentKeyDown(event) {
-				e = event
 
-				var keyCode = event.which;
-				// up
-				if (keyCode == 87 || keyCode == 38) {
-					//cube.position.y += 1;
-					// down
-					//alert("Up2"); 
+	// KEY DOWN --
+	
+	document.addEventListener("keydown", onDocumentKeyDown, false);
+	function onDocumentKeyDown(event) {
+		e = event
 
-				}
+		var keyCode = event.which;
+		// up
+		if (keyCode == 87 || keyCode == 38) {
+			//cube.position.y += 1;
+			// down
+			//alert("Up2"); 
 
-				console.log("keyCode=" + keyCode);
+		}
 
-				// ECHAP
-				if (keyCode == 27) {
-					// inverseControls();
-					//parameters.FPS_Controls = !controls.enabled
-					controls.enabled = !controls.enabled
-					//parameters.FPS_Controls
-					//GUI_Controls.updateDisplay()
-					console.log("New state control " + controls.enabled)
+		console.log("keyCode=" + keyCode);
 
-				}
-				
-				if (keyCode == 49) {
-					console.log('FPCAM');
-					  var control2FPS = new THREE.FirstPersonControls(camera, renderer.domElement);
-					  
-					  control2FPS.movementSpeed = 50;
-					  control2FPS.lookSpeed = 0.1;
-					  controls = control2FPS
-  
-				}
-				
-				// SPACE
-				else if (keyCode === 32) {
-					pause = !pause;
-					//e.preventDefault();
-					if (pause) console.timeEnd()
-					else console.time();
-					return false;
-				
-				} else if (e.which == 37) {
-					holdLeft = true;
-				} else if (e.which == 38) {
-					holdUp = true;
-				} else if (e.which == 39) {
-					holdRight = true;
-				} else if (e.which == 40) {
-					holdDown = true;
-				}
-			}	
+		// ECHAP
+		if (keyCode == 27) {
+			// inverseControls();
+			//parameters.FPS_Controls = !controls.enabled
+			controls.enabled = !controls.enabled
+			//parameters.FPS_Controls
+			//GUI_Controls.updateDisplay()
+			console.log("New state control " + controls.enabled)
+
+		}
+		
+		if (keyCode == 49) {
+			console.log('FPCAM');
+			  var control2FPS = new THREE.FirstPersonControls(camera, renderer.domElement);
+			  
+			  control2FPS.movementSpeed = 50;
+			  control2FPS.lookSpeed = 0.1;
+			  controls = control2FPS
+
+		}
+		
+		// SPACE
+		else if (keyCode === 32) {
+			pause = !pause;
+			//e.preventDefault();
+			if (pause) console.timeEnd()
+			else console.time();
+			return false;
+		
+		} else if (e.which == 37) {
+			holdLeft = true;
+		} else if (e.which == 38) {
+			holdUp = true;
+		} else if (e.which == 39) {
+			holdRight = true;
+		} else if (e.which == 40) {
+			holdDown = true;
+		}
+	}	
 
 	//MOUSE CLICK
 	var selection
 	
-//var onMouseDown = false;
+	var onMouseDown = false;
 
-
-// ONMOUSEMOVE : Permet de changer de curseur sur la Sélection
-window.onmousemove = function (e) {
-
-    //if (onMouseDown) onMouseDown.moved = true;
-
-    var vector = new THREE.Vector3(
-        +(e.clientX / window.innerWidth) * 2 - 1,
-        -(e.clientY / window.innerHeight) * 2 + 1, 0.5);
-    //projector.unprojectVector( vector, camera );
-
-    vector.unproject(camera);
-
-    var raycaster = new THREE.Raycaster(camera.position, vector.sub(camera.position).normalize());
-
-    var intersects = raycaster.intersectObjects(scene.children);
-
-    if (intersects.length > 0) {
-		var clickedObj = (intersects[0].object);
-		if(clickedObj.mover) {
-		//console.log(intersects[0])
-			$("body").css("cursor", "pointer");
-        /*	
-            if (window.event.ctrlKey) {
-                    var clickedObj = (intersects[0].object);
-                    SelectMeshMover(clickedObj, 'ctlr');
-                }
-        */
-		} else {
-			$("body").css("cursor", "default");
-		}
-    } else {
-        $("body").css("cursor", "default");
-    }
-
-}
-  
-
-  
   
 // MOUSE EVENT DOWN / UP
 
@@ -241,14 +202,50 @@ function initMouseEvent() {
 		holdFront = false;
 		holdBack = false;
     }
+
+	// ONMOUSEMOVE : Permet de changer de Curseur sur la Sélection
+	window.onmousemove = function (e) {
+
+		if (onMouseDown) onMouseDown.moved = true;
+
+		var vector = new THREE.Vector3(
+			+(e.clientX / window.innerWidth) * 2 - 1,
+			-(e.clientY / window.innerHeight) * 2 + 1, 0.5);
+		//projector.unprojectVector( vector, camera );
+
+		vector.unproject(camera);
+
+		var raycaster = new THREE.Raycaster(camera.position, vector.sub(camera.position).normalize());
+
+		var intersects = raycaster.intersectObjects(scene.children);
+
+		if (intersects.length > 0) {
+			var clickedObj = (intersects[0].object);
+			if(clickedObj.mover) {
+			//console.log(intersects[0])
+				$("body").css("cursor", "pointer");
+			/*	
+				if (window.event.ctrlKey) {
+						var clickedObj = (intersects[0].object);
+						SelectMeshMover(clickedObj, 'ctlr');
+					}
+			*/
+			} else {
+				$("body").css("cursor", "default");
+			}
+		} else {
+			$("body").css("cursor", "default");
+		}
+	}
+	
 }
 
 
-window.onresize = function () {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
-};
+	window.onresize = function () {
+		camera.aspect = window.innerWidth / window.innerHeight;
+		camera.updateProjectionMatrix();
+		renderer.setSize(window.innerWidth, window.innerHeight);
+	};
 
   
   
@@ -302,7 +299,8 @@ window.onresize = function () {
       "distance_KM" : planet.distance_KM * eScale,
       "period" : planet.period * this.tScale,
       "inclination" : planet.inclination * (Math.PI / 180),
-      "rotation" : (2 * Math.PI) / (planet.rotation_days * secInDay)
+      "rotation" : (2 * Math.PI) / (planet.rotation_days * secInDay),
+	  "mass" : planet.mass
     });
   });
 
