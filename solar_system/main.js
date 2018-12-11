@@ -162,6 +162,7 @@ function initMouseEvent() {
 				
 				//alert('s')
 			
+				// SELECTION 
                 if (intersects.length > 0) { // SELECTION
 
                     var clickedObj = (intersects[0].object);
@@ -364,11 +365,13 @@ function initMouseEvent() {
     var vector = new THREE.Vector3();
     var direction = camera.getWorldDirection(vector);	
 	
-	if(camera.position.distanceTo(new THREE.Vector3(0, 0, 0)) < 650){
-		if ((holdFront) && camera.position.distanceTo(new THREE.Vector3(0, 0, 0)) > 20) {
-			camera.position.add(vector.multiplyScalar(moveSpeed));
-		} else if ((holdBack) && camera.position.distanceTo(new THREE.Vector3(0, 0, 0)) < 550) {
-			camera.position.sub(direction.multiplyScalar(moveSpeed));
+	if(document.getElementById('cbZoom').checked){
+		if(camera.position.distanceTo(new THREE.Vector3(0, 0, 0)) < 650){
+			if ((holdFront) && camera.position.distanceTo(new THREE.Vector3(0, 0, 0)) > 20) {
+				camera.position.add(vector.multiplyScalar(moveSpeed));
+			} else if ((holdBack) && camera.position.distanceTo(new THREE.Vector3(0, 0, 0)) < 550) {
+				camera.position.sub(direction.multiplyScalar(moveSpeed));
+			}
 		}
 	}
 	
